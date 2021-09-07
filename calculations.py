@@ -62,7 +62,7 @@ def getReqReturn():
     return reqReturn
 
 #predicted fcf and terminal value included
-def futureFCF(avgfcf, ni, fcf, reqReturn): 
+def predictFCF(avgfcf, ni, fcf, reqReturn): 
     fcf.insert(0, avgfcf * ni[3])
     fcf.insert(0, avgfcf * ni[2])
     fcf.insert(0, avgfcf * ni[1])

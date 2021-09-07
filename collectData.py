@@ -24,6 +24,9 @@ def scrape(ticker):
     analysisURL = f'https://finance.yahoo.com/quote/{ticker}/analysis?p={ticker}'
     page3 = requests.get(analysisURL, headers=headers)
     soup3 = BeautifulSoup(page3.content, 'html.parser') 
+    statsURL = f'https://finance.yahoo.com/quote/{ticker}/key-statistics?p={ticker}'
+    page4 = requests.get(statsURL, headers=headers)
+    soup4 = BeautifulSoup(page4.content, 'html.parser')
     
 
     #revenue
@@ -80,6 +83,7 @@ def scrape(ticker):
     
     currentPrice = soup3.find("span", class_= "Trsdu(0.3s) Fw(b) Fz(36px) Mb(-4px) D(ib)").get_text()  
     
-    return revenue, net, ocf, fcf, ce, predictedRev, currentPrice
+    shares = soup4.find_all("td", class_= "Fw(500) Ta(end) Pstart(10px) Miw(60px)")[9].get_text()
+    return revenue, net, ocf, fcf, ce, predictedRev, currentPrice, shares
 
 

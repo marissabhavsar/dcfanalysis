@@ -16,15 +16,35 @@ def main():
     predictTR = scrape(ticker)[5]
     
     currentPrice = scrape(ticker)[6]
-    
-    
-    print(clean(totalRevenue, netIncome, ocf, fcf, ce, predictTR))
-    
+    shares = scrape(ticker)[7]
+
     totalRevenue = clean(totalRevenue, netIncome, ocf, fcf, ce, predictTR)[0]
     netIncome = clean(totalRevenue, netIncome, ocf, fcf, ce, predictTR)[1]
     ocf = clean(totalRevenue, netIncome, ocf, fcf, ce, predictTR)[2]
     fcf = clean(totalRevenue, netIncome, ocf, fcf, ce, predictTR)[3]
     ce = clean(totalRevenue, netIncome, ocf, fcf, ce, predictTR)[4]
+
+    fcfByincome = averageFcf(fcf, netIncome)
+    revGrowth = revGrowthRate(totalRevenue)
+    avgNiMargin = incomeMargin(totalRevenue, netIncome)
+    totalRevenue = predictRev(totalRevenue)
+    netIncome = predictNI(netIncome, avgNiMargin, totalRevenue)
+
+    reqReturn = getReqReturn()
+
+    fcf = predictFCF(fcfByincome, netIncome, fcf, reqReturn)
+    presentVal = presentValFCF(reqReturn, fcf)
+    
+    fairVal = fairValue(presentVal, shares)
+    marginSafety = getMarginSafety()
+
+    target = targetPrice(fairVal, marginSafety)
+    
+    print("The Current Price of ", ticker, " is ", currentPrice)
+    print("The Fair Value of ", ticker, " is: ", fairVal)
+    print("The Target Price of ", ticker, " is ", target)
+
+
 
     
     
